@@ -61,7 +61,7 @@ public class AddCommand implements Callable<Integer> {
   public Integer call() throws Exception {
     // switch case on param
     switch (table) {
-      case "Program":
+      case "program":
         // Add Program
         // Check required fields
         if (name == null || title == null || type == null) {
@@ -70,7 +70,7 @@ public class AddCommand implements Callable<Integer> {
         }
         Manager.AddProgram(name, title, type);
         break;
-      case "Course":
+      case "course":
         // Add Course
         // Check required fields (name, credit, department, term, location, finalTime)
         if (name == null || credit == null || department == null || term == null || location == null || finalTime == null) {
@@ -79,7 +79,7 @@ public class AddCommand implements Callable<Integer> {
         }
         Manager.AddCourse(name, credit, department, term, location, finalTime);
         break;
-      case "Department":
+      case "department":
         // Add Department
         // Check required fields (name)
         if (name == null) {
@@ -88,7 +88,7 @@ public class AddCommand implements Callable<Integer> {
         }
         Manager.AddDepartment(name);
         break;
-      case "Group":
+      case "group":
         // Add Group
         // Check required fields (name, credit)
         if (name == null || credit == null) {
@@ -97,7 +97,7 @@ public class AddCommand implements Callable<Integer> {
         }
         Manager.AddGroup(name, credit);
         break;
-      case "Class":
+      case "class":
         // Add Class
         // Check required fields (time, type)
         if (time == null || type == null) {

@@ -380,6 +380,7 @@
 
 package org.example.database;
 
+import com.microsoft.sqlserver.jdbc.*;
 
 public class Manager {
   public static void AddProgram(String name, String title, String type) {
@@ -402,23 +403,23 @@ public class Manager {
     System.out.println("AddClass");
   }
 
-  public static void LinkProgramAndGroup(String programID, String groupID) {
-    System.out.println("LinkProgramAndGroup");
+  public static void LinkProgramGroup(String programID, String groupID) {
+    System.out.println("LinkProgramGroup");
   }
 
-  public static void LinkGroupAndCourse(String groupID, String courseID) {
+  public static void LinkGroupCourse(String groupID, String courseID) {
     System.out.println("LinkGroupAndCourse");
   }
 
-  public static void LinkCourseAndPrerequisite(String courseID, String prereqID) {
+  public static void LinkCoursePrereq(String courseID, String prereqID) {
     System.out.println("LinkCourseAndPrerequisite");
   }
 
-  public static void LinkDepartmentAndProgram(String departmentID, String programID) {
+  public static void LinkDepartmentProgram(String departmentID, String programID) {
     System.out.println("LinkDepartmentAndProgram");
   }
 
-  public static void LinkCourseAndClass(String courseID, String classID) {
+  public static void LinkCourseClass(String courseID, String classID) {
     System.out.println("LinkCourseAndClass");
   }
 

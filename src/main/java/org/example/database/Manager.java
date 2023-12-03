@@ -378,15 +378,7 @@
 // END;
 
 
-
-
-
-
-
- 
-
-
-package com.example.database;
+package org.example.database;
 
 
 public class Manager {
@@ -394,7 +386,7 @@ public class Manager {
     System.out.println("AddProgram"); 
   }
 
-  public static void AddCourse(String name, int credit, int departmentID, String term, String location, String finalTime) {
+  public static void AddCourse(String name, String credit, String departmentID, String term, String location, String finalTime) {
     System.out.println("AddCourse");
   }
 
@@ -402,7 +394,7 @@ public class Manager {
     System.out.println("AddDepartment");
   }
 
-  public static void AddGroup(String groupName, int credit) {
+  public static void AddGroup(String groupName, String credit) {
     System.out.println("AddGroup");
   }
 
@@ -410,31 +402,31 @@ public class Manager {
     System.out.println("AddClass");
   }
 
-  public static void LinkProgramAndGroup(int programID, int groupID) {
+  public static void LinkProgramAndGroup(String programID, String groupID) {
     System.out.println("LinkProgramAndGroup");
   }
 
-  public static void LinkGroupAndCourse(int groupID, int courseID) {
+  public static void LinkGroupAndCourse(String groupID, String courseID) {
     System.out.println("LinkGroupAndCourse");
   }
 
-  public static void LinkCourseAndPrerequisite(int courseID, int prereqID) {
+  public static void LinkCourseAndPrerequisite(String courseID, String prereqID) {
     System.out.println("LinkCourseAndPrerequisite");
   }
 
-  public static void LinkDepartmentAndProgram(int departmentID, int programID) {
+  public static void LinkDepartmentAndProgram(String departmentID, String programID) {
     System.out.println("LinkDepartmentAndProgram");
   }
 
-  public static void LinkCourseAndClass(int courseID, int classID) {
+  public static void LinkCourseAndClass(String courseID, String classID) {
     System.out.println("LinkCourseAndClass");
   }
 
-  public static void UpdateProgram(int programID, String name, String title, String type) {
+  public static void UpdateProgram(String programID, String name, String title, String type) {
     System.out.println("UpdateProgram");
   }
 
-  public static void UpdateCourse(int courseID, String name, int credit, int departmentID, String term, String location, String finalTime) {
+  public static void UpdateCourse(String courseID, String name, String credit, String departmentID, String term, String location, String finalTime) {
     System.out.println("UpdateCourse");
   }
 

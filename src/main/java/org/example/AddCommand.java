@@ -38,7 +38,7 @@ public class AddCommand implements Callable<Integer> {
   private String credit;
 
   // --department
-  @CommandLine.Option(names = {"-d", "--department"}, description = "Department of the program, course, department, group, or class.")
+  @CommandLine.Option(names = {"-d", "--departmentId"}, description = "Department ID of the program, course, department, group, or class.")
   private String department;
   
   // --term
@@ -68,7 +68,7 @@ public class AddCommand implements Callable<Integer> {
           System.out.println("Missing required fields.");
           return 1;
         }
-        Manager.addProgram(name, title, type);
+        Manager.AddProgram(name, title, type);
         break;
       case "Course":
         // Add Course
@@ -77,7 +77,7 @@ public class AddCommand implements Callable<Integer> {
           System.out.println("Missing required fields.");
           return 1;
         }
-        Manager.addCourse(name, title, credit, department, term, location, finalTime);
+        Manager.AddCourse(name, credit, department, term, location, finalTime);
         break;
       case "Department":
         // Add Department
@@ -86,7 +86,7 @@ public class AddCommand implements Callable<Integer> {
           System.out.println("Missing required fields.");
           return 1;
         }
-        Manager.addDepartment(name);
+        Manager.AddDepartment(name);
         break;
       case "Group":
         // Add Group
@@ -95,7 +95,7 @@ public class AddCommand implements Callable<Integer> {
           System.out.println("Missing required fields.");
           return 1;
         }
-        Manager.addGroup(name, credit);
+        Manager.AddGroup(name, credit);
         break;
       case "Class":
         // Add Class
@@ -104,11 +104,12 @@ public class AddCommand implements Callable<Integer> {
           System.out.println("Missing required fields.");
           return 1;
         }
-        Manager.addClass(time, type);
+        Manager.AddClass(time, type);
         break;
       default:
         System.out.println("Invalid table name.");
         break;
     }
+    return 0;
   }
 }

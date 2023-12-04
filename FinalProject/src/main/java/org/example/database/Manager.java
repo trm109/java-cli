@@ -79,7 +79,7 @@ public class Manager {
     System.out.println("UpdateDepartment");
   }
 
-  public static void UpdateGroup(int groupID, String groupName, int credit) {
+  public static void UpdateGroup(String groupID, String groupName, int credit) {
     System.out.println("UpdateGroup");
   }
 

@@ -81,12 +81,133 @@ public class UpdateCommand implements Callable<Integer> {
 
   // Define Options
   // Possible Options:
-  // -p, --programId
-  // -n, --name
-  // -t, --type
-  //
+  // - programId
+  // - name
+  // - title
+  // - type
+  // - courseID
+  // - credit
+  // - departmentID
+  // - term
+  // - location
+  // - finalTime
+  // - groupID
+  // - groupName
+  // - classID
+  // - time
+  @CommandLine.Option(names = {"-p", "--programId"}, description = "Program ID")
+  private String programId;
+
+  @CommandLine.Option(names = {"-n", "--name"}, description = "Name")
+  private String name;
+
+  @CommandLine.Option(names = {"-t", "--title"}, description = "Title")
+  private String title;
+  
+  @CommandLine.Option(names = {"-y", "--type"}, description = "Type")
+  private String type;
+
+  @CommandLine.Option(names = {"-c", "--courseID"}, description = "Course ID")
+  private String courseId;
+  
+  @CommandLine.Option(names = {"-r", "--credit"}, description = "Credit")
+  private String credit;
+
+  @CommandLine.Option(names = {"-d", "--departmentID"}, description = "Department ID")
+  private String departmentId;
+  
+  @CommandLine.Option(names = {"-m", "--term"}, description = "Term")
+  private String term;
+
+  @CommandLine.Option(names = {"-l", "--location"}, description = "Location")
+  private String location;
+
+  @CommandLine.Option(names = {"-f", "--finalTime"}, description = "Final Time")
+  private String finalTime;
+
+  @CommandLine.Option(names = {"-g", "--groupID"}, description = "Group ID")
+  private String groupId;
+
+  @CommandLine.Option(names = {"-o", "--groupName"}, description = "Group Name")
+  private String groupName;
+
+  @CommandLine.Option(names = {"-a", "--classID"}, description = "Class ID")
+  private String classId;
+
+  @CommandLine.Option(names = {"-i", "--time"}, description = "Time")
+  private String time;
+
   @Override
   public Integer call() throws Exception {
+    switch (table) {
+      case "program":
+        // Update program
+        // Check Required Fields:
+        // Program ID
+        // Name
+        // Title
+        // Type
+        if (programId == null || name == null || title == null || type == null) {
+          System.out.println("Missing required fields");
+          return 1;
+        }
+        Manager.UpdateProgram(programId, name, title, type);
+        break;
+      case "course":
+        // Update course
+        // Check Required Fields:
+        // Course ID
+        // Name
+        // Credit
+        // Department ID
+        // Term
+        // Location
+        // Final Time
+        if (courseId == null || name == null || credit == null || departmentId == null || term == null || location == null || finalTime == null) {
+          System.out.println("Missing required fields");
+          return 1;
+        }
+        Manager.UpdateCourse(courseId, name, credit, departmentId, term, location, finalTime);
+        break;
+      case "department":
+        // Update department
+        // Check Required Fields:
+        // Department ID
+        // Name
+        if (departmentId == null || name == null) {
+          System.out.println("Missing required fields");
+          return 1;
+        }
+        Manager.UpdateDepartment(departmentId, name);
+        break;
+      case "group":
+        // Update group
+        // Check Required Fields:
+        // Group ID
+        // Group Name
+        // Credit
+        if (groupId == null || groupName == null || credit == null) {
+          System.out.println("Missing required fields");
+          return 1;
+        }
+        Manager.UpdateGroup(groupId, groupName, credit);
+        break;
+      case "class":
+        // Update class
+        // Check Required Fields:
+        // Class ID
+        // Time
+        // Type
+        if (classId == null || time == null || type == null) {
+          System.out.println("Missing required fields");
+          return 1;
+        }
+        Manager.UpdateClass(classId, time, type);
+        break;
+      default:
+        System.out.println("Invalid table name");
+        return 1;
+    }
     return 0;
   }
 }

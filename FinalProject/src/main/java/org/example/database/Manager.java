@@ -6,13 +6,13 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
 public class Manager {
   private static String connectionUrl = 
-    "jdbc:sqlserver://localhost;" 
-    + "database = database;"
-    + "user = sa;" 
-    + "password = yourStrong(!)Password;" 
+    "jdbc:sqlserver://127.0.0.1:1433;" 
+    + "database=database;"
+    + "user=sa;" 
+    + "password=yourStrong(!)Password;" 
     + "encrypt=true;"
-    + "trustServerCertificate-true;" 
-    + "loginTimeout-15;";
+    + "trustServerCertificate=true;" 
+    + "loginTimeout=15;";
   
   //private static ResultSet resultset = null;
 

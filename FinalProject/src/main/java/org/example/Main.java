@@ -11,7 +11,11 @@ import org.example.database.Manager;
   subcommands = {
     HelloCommand.class, 
     ListFilesCommand.class,
-    AddCommand.class
+    AddCommand.class,
+    UpdateCommand.class,
+    DeleteCommand.class,
+    SelectCommand.class,
+    LinkCommand.class
   }
 )
 public class Main {

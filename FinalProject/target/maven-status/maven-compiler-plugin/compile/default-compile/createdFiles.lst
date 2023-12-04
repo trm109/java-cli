@@ -1,4 +1,13 @@
+org/example/LinkCommand.class
+org/example/Main.class
 META-INF/native-image/picocli-generated/org.example/picocli-project-template/proxy-config.json
-org/example/picocli/PropertiesFileVersionProvider.class
+org/example/SelectCommand.class
 META-INF/native-image/picocli-generated/org.example/picocli-project-template/resource-config.json
 META-INF/native-image/picocli-generated/org.example/picocli-project-template/reflect-config.json
+org/example/HelloCommand.class
+org/example/picocli/PropertiesFileVersionProvider.class
+org/example/AddCommand.class
+org/example/DeleteCommand.class
+org/example/database/Manager.class
+org/example/UpdateCommand.class
+org/example/ListFilesCommand.class

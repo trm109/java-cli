@@ -6,10 +6,10 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
 public class Manager {
   private static String connectionUrl = 
-    "jdbc:sqlserver://127.0.0.1:1433;" 
-    + "database=database;"
-    + "user=sa;" 
-    + "password=yourStrong(!)Password;" 
+    "jdbc:sqlserver://10.16.0.76;" 
+    + "database=cxp-sql-03/trm109;"
+    + "user=dbuser;" 
+    + "password=muLhyqPz>a]FC+;" 
     + "encrypt=true;"
     + "trustServerCertificate=true;" 
     + "loginTimeout=15;";
@@ -75,35 +75,35 @@ public class Manager {
     System.out.println("UpdateCourse");
   }
 
-  public static void UpdateDepartment(int departmentID, String name) {
+  public static void UpdateDepartment(String departmentID, String name) {
     System.out.println("UpdateDepartment");
   }
 
-  public static void UpdateGroup(String groupID, String groupName, int credit) {
+  public static void UpdateGroup(String groupID, String groupName, String credit) {
     System.out.println("UpdateGroup");
   }
 
-  public static void UpdateClass(int classID, String time, String type) {
+  public static void UpdateClass(String classID, String time, String type) {
     System.out.println("UpdateClass");
   }
 
-  public static void DeleteProgram(int programID) {
+  public static void DeleteProgram(String programID) {
     System.out.println("DeleteProgram");
   }
 
-  public static void DeleteCourse(int courseID) {
+  public static void DeleteCourse(String courseID) {
     System.out.println("DeleteCourse");
   }
 
-  public static void DeleteDepartment(int departmentID) {
+  public static void DeleteDepartment(String departmentID) {
     System.out.println("DeleteDepartment");
   }
 
-  public static void DeleteGroup(int groupID) {
+  public static void DeleteGroup(String groupID) {
     System.out.println("DeleteGroup");
   }
 
-  public static void DeleteClass(int classID) {
+  public static void DeleteClass(String classID) {
     System.out.println("DeleteClass");
   }
 

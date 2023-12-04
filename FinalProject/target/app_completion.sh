@@ -157,12 +157,24 @@ function _complete_app() {
   if [ "${COMP_LINE}" = "${COMP_WORDS[0]} hello" ];    then _picocli_app; return $?; fi
   if [ "${COMP_LINE}" = "${COMP_WORDS[0]} list" ];    then _picocli_app; return $?; fi
   if [ "${COMP_LINE}" = "${COMP_WORDS[0]} add" ];    then _picocli_app; return $?; fi
+  if [ "${COMP_LINE}" = "${COMP_WORDS[0]} update" ];    then _picocli_app; return $?; fi
+  if [ "${COMP_LINE}" = "${COMP_WORDS[0]} delete" ];    then _picocli_app; return $?; fi
+  if [ "${COMP_LINE}" = "${COMP_WORDS[0]} select" ];    then _picocli_app; return $?; fi
+  if [ "${COMP_LINE}" = "${COMP_WORDS[0]} link" ];    then _picocli_app; return $?; fi
 
   # Find the longest sequence of subcommands and call the bash function for that subcommand.
   local cmds0=(hello)
   local cmds1=(list)
   local cmds2=(add)
+  local cmds3=(update)
+  local cmds4=(delete)
+  local cmds5=(select)
+  local cmds6=(link)
 
+  if CompWordsContainsArray "${cmds6[@]}"; then _picocli_app_link; return $?; fi
+  if CompWordsContainsArray "${cmds5[@]}"; then _picocli_app_select; return $?; fi
+  if CompWordsContainsArray "${cmds4[@]}"; then _picocli_app_delete; return $?; fi
+  if CompWordsContainsArray "${cmds3[@]}"; then _picocli_app_update; return $?; fi
   if CompWordsContainsArray "${cmds2[@]}"; then _picocli_app_add; return $?; fi
   if CompWordsContainsArray "${cmds1[@]}"; then _picocli_app_list; return $?; fi
   if CompWordsContainsArray "${cmds0[@]}"; then _picocli_app_hello; return $?; fi
@@ -176,7 +188,7 @@ function _picocli_app() {
   # Get completion data
   local curr_word=${COMP_WORDS[COMP_CWORD]}
 
-  local commands="hello list add"
+  local commands="hello list add update delete select link"
   local flag_opts="-h --help -V --version"
   local arg_opts=""
 
@@ -279,6 +291,177 @@ function _picocli_app_add() {
       return
       ;;
     -i|--time)
+      return
+      ;;
+  esac
+
+  if [[ "${curr_word}" == -* ]]; then
+    COMPREPLY=( $(compgen -W "${flag_opts} ${arg_opts}" -- "${curr_word}") )
+  else
+    local positionals=""
+    local IFS=$'\n'
+    COMPREPLY=( $(compgen -W "${commands// /$'\n'}${IFS}${positionals}" -- "${curr_word}") )
+  fi
+}
+
+# Generates completions for the options and subcommands of the `update` subcommand.
+function _picocli_app_update() {
+  # Get completion data
+  local curr_word=${COMP_WORDS[COMP_CWORD]}
+  local prev_word=${COMP_WORDS[COMP_CWORD-1]}
+
+  local commands=""
+  local flag_opts=""
+  local arg_opts="-p --programId -n --name -t --title -y --type -c --courseID -r --credit -d --departmentID -m --term -l --location -f --finalTime -g --groupID -o --groupName -a --classID -i --time"
+
+  type compopt &>/dev/null && compopt +o default
+
+  case ${prev_word} in
+    -p|--programId)
+      return
+      ;;
+    -n|--name)
+      return
+      ;;
+    -t|--title)
+      return
+      ;;
+    -y|--type)
+      return
+      ;;
+    -c|--courseID)
+      return
+      ;;
+    -r|--credit)
+      return
+      ;;
+    -d|--departmentID)
+      return
+      ;;
+    -m|--term)
+      return
+      ;;
+    -l|--location)
+      return
+      ;;
+    -f|--finalTime)
+      return
+      ;;
+    -g|--groupID)
+      return
+      ;;
+    -o|--groupName)
+      return
+      ;;
+    -a|--classID)
+      return
+      ;;
+    -i|--time)
+      return
+      ;;
+  esac
+
+  if [[ "${curr_word}" == -* ]]; then
+    COMPREPLY=( $(compgen -W "${flag_opts} ${arg_opts}" -- "${curr_word}") )
+  else
+    local positionals=""
+    local IFS=$'\n'
+    COMPREPLY=( $(compgen -W "${commands// /$'\n'}${IFS}${positionals}" -- "${curr_word}") )
+  fi
+}
+
+# Generates completions for the options and subcommands of the `delete` subcommand.
+function _picocli_app_delete() {
+  # Get completion data
+  local curr_word=${COMP_WORDS[COMP_CWORD]}
+  local prev_word=${COMP_WORDS[COMP_CWORD-1]}
+
+  local commands=""
+  local flag_opts=""
+  local arg_opts="-i --id"
+
+  type compopt &>/dev/null && compopt +o default
+
+  case ${prev_word} in
+    -i|--id)
+      return
+      ;;
+  esac
+
+  if [[ "${curr_word}" == -* ]]; then
+    COMPREPLY=( $(compgen -W "${flag_opts} ${arg_opts}" -- "${curr_word}") )
+  else
+    local positionals=""
+    local IFS=$'\n'
+    COMPREPLY=( $(compgen -W "${commands// /$'\n'}${IFS}${positionals}" -- "${curr_word}") )
+  fi
+}
+
+# Generates completions for the options and subcommands of the `select` subcommand.
+function _picocli_app_select() {
+  # Get completion data
+  local curr_word=${COMP_WORDS[COMP_CWORD]}
+  local prev_word=${COMP_WORDS[COMP_CWORD-1]}
+
+  local commands=""
+  local flag_opts=""
+  local arg_opts="-n --name -t --type -d --dept-name -c --course-name"
+
+  type compopt &>/dev/null && compopt +o default
+
+  case ${prev_word} in
+    -n|--name)
+      return
+      ;;
+    -t|--type)
+      return
+      ;;
+    -d|--dept-name)
+      return
+      ;;
+    -c|--course-name)
+      return
+      ;;
+  esac
+
+  if [[ "${curr_word}" == -* ]]; then
+    COMPREPLY=( $(compgen -W "${flag_opts} ${arg_opts}" -- "${curr_word}") )
+  else
+    local positionals=""
+    local IFS=$'\n'
+    COMPREPLY=( $(compgen -W "${commands// /$'\n'}${IFS}${positionals}" -- "${curr_word}") )
+  fi
+}
+
+# Generates completions for the options and subcommands of the `link` subcommand.
+function _picocli_app_link() {
+  # Get completion data
+  local curr_word=${COMP_WORDS[COMP_CWORD]}
+  local prev_word=${COMP_WORDS[COMP_CWORD-1]}
+
+  local commands=""
+  local flag_opts=""
+  local arg_opts="-p --programId -g --groupId -c --courseId -r --prereqId -d --departmentId -l --classId"
+
+  type compopt &>/dev/null && compopt +o default
+
+  case ${prev_word} in
+    -p|--programId)
+      return
+      ;;
+    -g|--groupId)
+      return
+      ;;
+    -c|--courseId)
+      return
+      ;;
+    -r|--prereqId)
+      return
+      ;;
+    -d|--departmentId)
+      return
+      ;;
+    -l|--classId)
       return
       ;;
   esac

@@ -19,6 +19,17 @@
     ]
   },
   {
+    "name" : "org.example.DeleteCommand",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "fields" : [
+      { "name" : "id" },
+      { "name" : "tableName" }
+    ]
+  },
+  {
     "name" : "org.example.HelloCommand",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
@@ -60,6 +71,20 @@
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
     "allPublicMethods" : true
+  },
+  {
+    "name" : "org.example.SelectCommand",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "fields" : [
+      { "name" : "courseName" },
+      { "name" : "deptName" },
+      { "name" : "name" },
+      { "name" : "table" },
+      { "name" : "type" }
+    ]
   },
   {
     "name" : "org.example.UpdateCommand",

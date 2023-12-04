@@ -61,12 +61,12 @@ public class Manager {
     //    department_id INT NOT NULL,
     //    term VARCHAR(20) NOT NULL,
     //    location VARCHAR(50) NOT NULL,
-    //    final_time DATE NOT NULL,
+    //    final_time VARCHAR(20) NOT NULL,
     //    CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id)
     //    );
     try {
       Statement stmt = conn.createStatement();
-      String sql = "CREATE TABLE IF NOT EXISTS course (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, credit INT NOT NULL, department_id INT NOT NULL, term VARCHAR(20) NOT NULL, location VARCHAR(50) NOT NULL, final_time DATE NOT NULL, CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id));";
+      String sql = "CREATE TABLE IF NOT EXISTS course (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, credit INT NOT NULL, department_id INT NOT NULL, term VARCHAR(20) NOT NULL, location VARCHAR(50) NOT NULL, final_time VARCHAR(20) NOT NULL, CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id));";
       stmt.executeUpdate(sql);
     } catch (Exception e) {
       e.printStackTrace();
@@ -108,7 +108,7 @@ public class Manager {
     //    );
     try {
       Statement stmt = conn.createStatement();
-      String sql = "CREATE TABLE IF NOT EXISTS class (id SERIAL PRIMARY KEY, time TIME NOT NULL, type VARCHAR(20) NOT NULL);";
+      String sql = "CREATE TABLE IF NOT EXISTS class (id SERIAL PRIMARY KEY, time STRING NOT NULL, type VARCHAR(20) NOT NULL);";
       stmt.executeUpdate(sql);
     } catch (Exception e) {
       e.printStackTrace();
@@ -336,7 +336,7 @@ public class Manager {
   public static void UpdateProgram(String programID, String name, String title, String type) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE program SET name = ?, title = ?, type = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) program SET name = ?, title = ?, type = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setString(2, title);
       ps.setString(3, type);
@@ -351,7 +351,7 @@ public class Manager {
   public static void UpdateCourse(String courseID, String name, String credit, String departmentID, String term, String location, String finalTime) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE course SET name = ?, credit = ?, department_id = ?, term = ?, location = ?, final_time = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) course SET name = ?, credit = ?, department_id = ?, term = ?, location = ?, final_time = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setInt(2, Integer.parseInt(credit));
       ps.setInt(3, Integer.parseInt(departmentID));
@@ -369,7 +369,7 @@ public class Manager {
   public static void UpdateDepartment(String departmentID, String name) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE department SET name = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) department SET name = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setInt(2, Integer.parseInt(departmentID));
       ps.executeUpdate();
@@ -382,7 +382,7 @@ public class Manager {
   public static void UpdateGroup(String groupID, String groupName, String credit) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE grp SET group_name = ?, credit = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) grp SET group_name = ?, credit = ? WHERE id = ?");
       ps.setString(1, groupName);
       ps.setInt(2, Integer.parseInt(credit));
       ps.setString(3, groupID);
@@ -396,7 +396,7 @@ public class Manager {
   public static void UpdateClass(String classID, String time, String type) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE class SET time = ?, type = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) class SET time = ?, type = ? WHERE id = ?");
       ps.setString(1, time);
       ps.setString(2, type);
       ps.setInt(3, Integer.parseInt(classID));
@@ -647,20 +647,20 @@ public class Manager {
   }
 //CREATE OR REPLACE FUNCTION GenerateClassesForSemester(
 //    courseID INT,
-//    semesterStart DATE,
-//    semesterEnd DATE,
+//    semesterStart VARCHAR(20),
+//    semesterEnd VARCHAR(20),
 //    classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.)
 //    classTime TIME,
 //    classType VARCHAR(20)
 //)
 //RETURNS VOID AS $$
 //DECLARE
-//    currentDate DATE := semesterStart;
+//    currentDate VARCHAR(20) := semesterStart;
 //    newClassID INT;
 //BEGIN
 //    WHILE currentDate <= semesterEnd LOOP
 //        -- Check if the current day is the specified class day
-//        IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN
+//        IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS VARCHAR(20))) THEN
 //            -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1.
 //            INSERT INTO class (time, type)
 //            VALUES (classTime, classType)
@@ -682,7 +682,7 @@ public class Manager {
     
     //try {
     //  // Create stored procedure
-    //  Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart DATE, semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
+    //  Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart VARCHAR(20), semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
     //  stmt.executeUpdate();
     //  System.out.println("Created stored procedure");
     //  // Call  stored procedure

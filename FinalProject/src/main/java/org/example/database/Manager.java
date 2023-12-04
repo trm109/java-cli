@@ -108,7 +108,7 @@ public class Manager {
     //    );
     try {
       Statement stmt = conn.createStatement();
-      String sql = "CREATE TABLE IF NOT EXISTS class (id SERIAL PRIMARY KEY, time STRING NOT NULL, type VARCHAR(20) NOT NULL);";
+      String sql = "CREATE TABLE IF NOT EXISTS class (id SERIAL PRIMARY KEY, time VARCHAR(20) NOT NULL, type VARCHAR(20) NOT NULL);";
       stmt.executeUpdate(sql);
     } catch (Exception e) {
       e.printStackTrace();
@@ -154,7 +154,13 @@ public class Manager {
     //    CONSTRAINT FK_course_prereq_prereq FOREIGN KEY (prereq_id) REFERENCES course(id),
     //    PRIMARY KEY (course_id, prereq_id)
     //    );
-    
+    try{
+      Statement stmt = conn.createStatement();
+      String sql = "CREATE TABLE IF NOT EXISTS course_prereq (course_id INT NOT NULL, prereq_id INT NOT NULL, CONSTRAINT FK_course_prereq_course FOREIGN KEY (course_id) REFERENCES course(id), CONSTRAINT FK_course_prereq_prereq FOREIGN KEY (prereq_id) REFERENCES course(id), PRIMARY KEY (course_id, prereq_id));";
+      stmt.executeUpdate(sql);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     // Create department_program table
     //CREATE TABLE department_program (
     //    department_id INT NOT NULL,
@@ -579,6 +585,7 @@ public class Manager {
   // Adds groups to a program and returns total credit to get a degree
   public static void AddGroupsToProgramAndGetTotalCredits(String programID, String[] groupNames) {
     Manager.Connect();
+    // create groups.
     for (String groupName : groupNames) {
       try {
         PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ?))");
@@ -619,6 +626,7 @@ public class Manager {
       e.printStackTrace();
     }
     try {
+      // !! Not working.
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO group_course (group_id, course_id) VALUES ((SELECT id FROM grp WHERE group_name = ?), (SELECT id FROM course WHERE name = ?))");
       ps.setString(1, groupName);
       ps.setString(2, courseName);

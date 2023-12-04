@@ -1,4 +1,15 @@
 #!/bin/sh
+# Add Departments
+java -jar app.jar add department --name computer_science
+java -jar app.jar add department --name chemistry
+java -jar app.jar add department --name mathematics
+java -jar app.jar add department --name foreign_language
+java -jar app.jar add department --name philosophy
+java -jar app.jar add department --name history
+java -jar app.jar add department --name statistics
+java -jar app.jar add department --name art
+
+# Add courses
 java -jar app.jar add course --name advanced_java --credit 4 --departmentId 1 --term fall --location PBL --finalTime 1999-05-10
 java -jar app.jar add course --name data_structures --credit 3 --departmentId 1 --term spring --location Thwing --finalTime 1999-03-15
 java -jar app.jar add course --name algorithms --credit 4 --departmentId 1 --term summer --location NRB --finalTime 1999-07-20
@@ -18,3 +29,57 @@ java -jar app.jar add course --name introduction_to_philosophy --credit 3 --depa
 java -jar app.jar add course --name world_history --credit 4 --departmentId 6 --term spring --location Thwing --finalTime 1999-05-05
 java -jar app.jar add course --name basic_statistics --credit 3 --departmentId 7 --term summer --location NRB --finalTime 1999-09-10
 java -jar app.jar add course --name modern_art --credit 4 --departmentId 8 --term fall --location quad --finalTime 1999-12-05
+
+# Add classes (--time , --type)
+java -jar app.jar add class --time 15:00:00 --type lecture
+java -jar app.jar add class --time 16:00:00 --type lecture
+java -jar app.jar add class --time 17:00:00 --type lecture
+java -jar app.jar add class --time 18:00:00 --type test
+java -jar app.jar add class --time 19:00:00 --type project
+
+# Add group (--name, --credit)
+java -jar app.jar add group --name computer_science --credit 4
+java -jar app.jar add group --name chemistry --credit 3
+java -jar app.jar add group --name mathematics --credit 4
+java -jar app.jar add group --name foreign_language --credit 3
+java -jar app.jar add group --name philosophy --credit 4
+java -jar app.jar add group --name history --credit 3
+java -jar app.jar add group --name statistics --credit 4
+
+# Add program (--name, --title, --type)
+java -jar app.jar add program --name computer_science --title BS --type undergraduate
+java -jar app.jar add program --name chemistry --title BS --type undergraduate
+java -jar app.jar add program --name mathematics --title BS --type undergraduate
+java -jar app.jar add program --name foreign_language --title BA --type undergraduate
+java -jar app.jar add program --name philosophy --title BA --type undergraduate
+java -jar app.jar add program --name history --title BA --type undergraduate
+java -jar app.jar add program --name statistics --title BS --type undergraduate
+
+
+# Link courses to classes
+java -jar app.jar link course-class --courseId 1 --classId 1
+java -jar app.jar link course-class --courseId 2 --classId 2
+java -jar app.jar link course-class --courseId 3 --classId 3
+java -jar app.jar link course-class --courseId 4 --classId 4
+
+# Link departments to programs
+java -jar app.jar link department-program --departmentId 1 --programId 1
+java -jar app.jar link department-program --departmentId 2 --programId 2
+java -jar app.jar link department-program --departmentId 3 --programId 3
+java -jar app.jar link department-program --departmentId 4 --programId 4
+
+# Link courses to groups
+java -jar app.jar link group-course --courseId 1 --groupId 1
+java -jar app.jar link group-course --courseId 2 --groupId 1
+java -jar app.jar link group-course --courseId 3 --groupId 2
+java -jar app.jar link group-course --courseId 4 --groupId 2
+# Link groups to programs
+java -jar app.jar link program-group --groupId 1 --programId 1
+java -jar app.jar link program-group --groupId 2 --programId 2
+java -jar app.jar link program-group --groupId 3 --programId 3
+java -jar app.jar link program-group --groupId 4 --programId 4
+# course-prereq
+java -jar app.jar link course-prereq --courseId 1 --prereqId 2
+java -jar app.jar link course-prereq --courseId 2 --prereqId 3
+java -jar app.jar link course-prereq --courseId 3 --prereqId 4
+java -jar app.jar link course-prereq --courseId 4 --prereqId 5

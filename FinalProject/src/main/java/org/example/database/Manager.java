@@ -12,12 +12,12 @@ public class Manager {
     + "encrypt=true;"
     + "trustServerCertificate=true;" 
     + "loginTimeout=15;";
+  public static Connection conn = null;
   
   //private static ResultSet resultset = null;
 
   public static void Connect(){
     try{
-      Connection conn = null;
       Class.forName("org.postgresql.Driver");
       String url = "jdbc:postgresql://db:5432/database";
 

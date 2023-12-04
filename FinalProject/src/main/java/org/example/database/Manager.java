@@ -580,24 +580,133 @@ public class Manager {
     }
     System.out.println("SelectClassesByCourseName");
   }
-
-  public static void AddGroupsToProgramAndGetTotalCredits(int programID, String groupNames) {
+  
+  // Adds groups to a program and returns total credit to get a degree
+  public static void AddGroupsToProgramAndGetTotalCredits(int programID, String[] groupNames) {
     Manager.Connect();
+    for (String groupName : groupNames) {
+      try {
+        PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ?))");
+        ps.setInt(1, programID);
+        ps.setString(2, groupName);
+        ps.executeUpdate();
+        System.out.println("Assigned group to program");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    try {
+      PreparedStatement ps = Manager.conn.prepareStatement("SELECT SUM(credit) FROM grp WHERE id IN (SELECT group_id FROM program_group WHERE program_id = ?)");
+      ps.setInt(1, programID);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        System.out.println(rs.getString("SUM(credit)"));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     System.out.println("AddGroupsToProgramAndGetTotalCredits");
   }
-
+  // Adds a course, then assigns to a group.
   public static void AddCourseAndAssignToGroup(String courseName, int credit, int departmentID, String term, String location, String finalTime, String groupName) {
     Manager.Connect();
+    try {
+      PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course (name, credit, department_id, term, location, final_time) VALUES (?, ?, ?, ?, ?, ?)");
+      ps.setString(1, courseName);
+      ps.setInt(2, credit);
+      ps.setInt(3, departmentID);
+      ps.setString(4, term);
+      ps.setString(5, location);
+      ps.setString(6, finalTime);
+      ps.executeUpdate();
+      System.out.println("Added course");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    try {
+      PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO group_course (group_id, course_id) VALUES ((SELECT id FROM grp WHERE group_name = ?), (SELECT id FROM course WHERE name = ?))");
+      ps.setString(1, groupName);
+      ps.setString(2, courseName);
+      ps.executeUpdate();
+      System.out.println("Assigned course to group");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     System.out.println("AddCourseAndAssignToGroup");
   }
-
-  public static void AddPrerequisitesToCourse(int courseID, int[] prerequisiteIDs) {
+  // Adds multiple prequisites to a course
+  public static void AddPrerequisitesToCourse(String courseID, String[] prerequisiteIDs) {
     Manager.Connect();
+    for (String prerequisiteID : prerequisiteIDs) {
+      try {
+        PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course_prereq (course_id, prereq_id) VALUES (?, ?)");
+        ps.setString(1, courseID);
+        ps.setString(2, prerequisiteID);
+        ps.executeUpdate();
+        System.out.println("Assigned prereq " + prerequisiteIDs + " to course " + courseID);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
     System.out.println("AddPrerequisitesToCourse");
   }
+//CREATE OR REPLACE FUNCTION GenerateClassesForSemester(
+//    courseID INT,
+//    semesterStart DATE,
+//    semesterEnd DATE,
+//    classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.)
+//    classTime TIME,
+//    classType VARCHAR(20)
+//)
+//RETURNS VOID AS $$
+//DECLARE
+//    currentDate DATE := semesterStart;
+//    newClassID INT;
+//BEGIN
+//    WHILE currentDate <= semesterEnd LOOP
+//        -- Check if the current day is the specified class day
+//        IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN
+//            -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1.
+//            INSERT INTO class (time, type)
+//            VALUES (classTime, classType)
+//            RETURNING id INTO newClassID;
+//
+//            -- Link the class to the course
+//            INSERT INTO course_class (course_id, class_id)
+//            VALUES (courseID, newClassID);
+//        END IF;
+//
+//        -- Move to the next week
+//        currentDate := currentDate + INTERVAL '1 week';
+//    END LOOP;
+//END;
+//$$ LANGUAGE plpgsql;
 
   public static void GenerateClassesForSemester(int courseID, String semesterStart, String semesterEnd, String classDay, String classTime, String classType) {
     Manager.Connect();
+    
+    try {
+      // Create stored procedure
+      Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart DATE, semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
+      stmt.executeUpdate();
+      System.out.println("Created stored procedure");
+      // Call  stored procedure
+      PreparedStatement ps = Manager.conn.prepareStatement("SELECT GenerateClassesForSemester(?, ?, ?, ?, ?, ?)");
+      ps.setInt(1, courseID);
+      ps.setString(2, semesterStart);
+      ps.setString(3, semesterEnd);
+      ps.setString(4, classDay);
+      ps.setString(5, classTime);
+      ps.setString(6, classType);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        System.out.println(rs.getString("GenerateClassesForSemester"));
+      }
+      System.out.println("Called stored procedure");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     System.out.println("GenerateClassesForSemester");
   }
 }

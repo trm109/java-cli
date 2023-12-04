@@ -22,7 +22,6 @@ public class Main {
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Main()).execute(args);
-        Manager.Connect();
         System.exit(exitCode);
     }
 }

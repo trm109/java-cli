@@ -5,6 +5,7 @@ services:
     tty: true 
     depends_on:
       - db
+      - pgadmin
   db:
     image: postgres:latest
     ports:
@@ -14,7 +15,6 @@ services:
       - POSTGRES_PASSWORD=password!
       - POSTGRES_DB=database
       - PGPORT=5432
-        
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -22,3 +22,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "admin"
     ports:
       - "8080:80"
+    volumes:
+    - ./postgres-data:/var/lib/postgresql/data
+    depends_on:
+      - db

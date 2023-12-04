@@ -149,6 +149,7 @@ public class UpdateCommand implements Callable<Integer> {
         // Type
         if (programId == null || name == null || title == null || type == null) {
           System.out.println("Missing required fields");
+          System.out.println("Required fields: programId, name, title, type");
           return 1;
         }
         Manager.UpdateProgram(programId, name, title, type);
@@ -165,6 +166,7 @@ public class UpdateCommand implements Callable<Integer> {
         // Final Time
         if (courseId == null || name == null || credit == null || departmentId == null || term == null || location == null || finalTime == null) {
           System.out.println("Missing required fields");
+          System.out.println("Required fields: courseId, name, credit, departmentId, term, location, finalTime");
           return 1;
         }
         Manager.UpdateCourse(courseId, name, credit, departmentId, term, location, finalTime);
@@ -176,6 +178,7 @@ public class UpdateCommand implements Callable<Integer> {
         // Name
         if (departmentId == null || name == null) {
           System.out.println("Missing required fields");
+          System.out.println("Required fields: departmentId, name");
           return 1;
         }
         Manager.UpdateDepartment(departmentId, name);
@@ -188,6 +191,7 @@ public class UpdateCommand implements Callable<Integer> {
         // Credit
         if (groupId == null || groupName == null || credit == null) {
           System.out.println("Missing required fields");
+          System.out.println("Required fields: groupId, groupName, credit");
           return 1;
         }
         Manager.UpdateGroup(groupId, groupName, credit);
@@ -200,6 +204,7 @@ public class UpdateCommand implements Callable<Integer> {
         // Type
         if (classId == null || time == null || type == null) {
           System.out.println("Missing required fields");
+          System.out.println("Required fields: classId, time, type");
           return 1;
         }
         Manager.UpdateClass(classId, time, type);

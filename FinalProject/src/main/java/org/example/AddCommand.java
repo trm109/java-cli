@@ -66,6 +66,7 @@ public class AddCommand implements Callable<Integer> {
         // Check required fields
         if (name == null || title == null || type == null) {
           System.out.println("Missing required fields.");
+          System.out.println("Required fields: name, title, type");
           return 1;
         }
         Manager.AddProgram(name, title, type);
@@ -75,6 +76,7 @@ public class AddCommand implements Callable<Integer> {
         // Check required fields (name, credit, department, term, location, finalTime)
         if (name == null || credit == null || department == null || term == null || location == null || finalTime == null) {
           System.out.println("Missing required fields.");
+          System.out.println("Required fields: name, credit, department, term, location, finalTime");
           return 1;
         }
         Manager.AddCourse(name, credit, department, term, location, finalTime);
@@ -84,6 +86,7 @@ public class AddCommand implements Callable<Integer> {
         // Check required fields (name)
         if (name == null) {
           System.out.println("Missing required fields.");
+          System.out.println("Required fields: name");
           return 1;
         }
         Manager.AddDepartment(name);
@@ -93,6 +96,7 @@ public class AddCommand implements Callable<Integer> {
         // Check required fields (name, credit)
         if (name == null || credit == null) {
           System.out.println("Missing required fields.");
+          System.out.println("Required fields: name, credit");
           return 1;
         }
         Manager.AddGroup(name, credit);
@@ -102,6 +106,7 @@ public class AddCommand implements Callable<Integer> {
         // Check required fields (time, type)
         if (time == null || type == null) {
           System.out.println("Missing required fields.");
+          System.out.println("Required fields: time, type");
           return 1;
         }
         Manager.AddClass(time, type);

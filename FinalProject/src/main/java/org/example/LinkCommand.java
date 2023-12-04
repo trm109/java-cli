@@ -73,35 +73,35 @@ public class LinkCommand implements Callable<Integer>{
     switch (linkType) {
       case "program-group":
         if (programId == null || groupId == null) {
-          System.out.println("Program id and group id are required");
+          System.out.println("programId and groupId are required");
           return 1;
         }
         Manager.LinkProgramGroup(programId, groupId);
         break;
       case "group-course":
         if (groupId == null || courseId == null) {
-          System.out.println("Group id and course id are required");
+          System.out.println("groupId and courseId are required");
           return 1;
         }
         Manager.LinkGroupCourse(groupId, courseId);
         break;
       case "course-prereq":
         if (courseId == null || prereqId == null) {
-          System.out.println("Course id and prereq id are required");
+          System.out.println("courseId and prereqId are required");
           return 1;
         }
         Manager.LinkCoursePrereq(courseId, prereqId);
         break;
       case "department-program":
         if (departmentId == null || programId == null) {
-          System.out.println("Department id and program id are required");
+          System.out.println("departmentId and programId are required");
           return 1;
         }
         Manager.LinkDepartmentProgram(departmentId, programId);
         break;
       case "course-class":
         if (courseId == null || classId == null) {
-          System.out.println("Course id and class id are required");
+          System.out.println("courseId and classId are required");
           return 1;
         }
         Manager.LinkCourseClass(courseId, classId);

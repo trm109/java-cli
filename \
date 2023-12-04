@@ -16,26 +16,18 @@ public class Manager {
   //private static ResultSet resultset = null;
 
   public static void Connect(){
-    try{
-      Connection conn = null;
-      Class.forName("org.postgresql.Driver");
-      String url = "jdbc:postgresql://db:5432/database";
+    Connection conn = null;
+    Class.forName("org.postgresql.Driver");
+    String url = "jdbc:postgresql://db:5432/database";
 
-      Properties props = new Properties();
+    Properties props = new Properties();
 
-      props.setProperty("user", "user");
-      props.setProperty("password", "password!");
-      conn = DriverManager.getConnection(url, props);
-      // print connection info
-      System.out.println("Connected to the PostgreSQL server successfully.");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    props.setProperty("user", "user");
+    props.setProperty("password", System.getenv("PGPASSWORD"));
+    conn = DriverManager.getConnection(url, props);
   }
 
   public static void AddProgram(String name, String title, String type) {
-    // using jdbc, add program to database
-
     System.out.println("AddProgram"); 
   }
 

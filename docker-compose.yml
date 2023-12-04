@@ -6,11 +6,19 @@ services:
     depends_on:
       - db
   db:
+    image: postgres:latest
     ports:
-      - 1433:1433
-    expose:
-      - 1433
-    image: mcr.microsoft.com/mssql/server:2019-latest
+      - "5432:5432" # Host machine <-- Container.
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD="yourStrong(!)Password"
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password!
+      - POSTGRES_DB=database
+      - PGPORT=5432
+        
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "8080:80"

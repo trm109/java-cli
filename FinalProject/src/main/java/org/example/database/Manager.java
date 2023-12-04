@@ -49,7 +49,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS program (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, title VARCHAR(50) NOT NULL, type VARCHAR(20) NOT NULL);";
       stmt.executeUpdate(sql);
-      System.out.println("Created program table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -69,7 +68,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS course (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, credit INT NOT NULL, department_id INT NOT NULL, term VARCHAR(20) NOT NULL, location VARCHAR(50) NOT NULL, final_time DATE NOT NULL, CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id));";
       stmt.executeUpdate(sql);
-      System.out.println("Created course table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -84,7 +82,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS department (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL);";
       stmt.executeUpdate(sql);
-      System.out.println("Created department table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -99,7 +96,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS grp (id SERIAL PRIMARY KEY, group_name VARCHAR(50) NOT NULL, credit INT NOT NULL);";
       stmt.executeUpdate(sql);
-      System.out.println("Created group table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -114,7 +110,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS class (id SERIAL PRIMARY KEY, time TIME NOT NULL, type VARCHAR(20) NOT NULL);";
       stmt.executeUpdate(sql);
-      System.out.println("Created class table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -131,7 +126,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS program_group (program_id INT NOT NULL, group_id INT NOT NULL, CONSTRAINT FK_program_group_program FOREIGN KEY (program_id) REFERENCES program(id), CONSTRAINT FK_program_group_group FOREIGN KEY (group_id) REFERENCES grp(id), PRIMARY KEY (program_id, group_id));";
       stmt.executeUpdate(sql);
-      System.out.println("Created program_group table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -148,7 +142,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS group_course (group_id INT NOT NULL, course_id INT NOT NULL, CONSTRAINT FK_group_course_group FOREIGN KEY (group_id) REFERENCES grp(id), CONSTRAINT FK_group_course_course FOREIGN KEY (course_id) REFERENCES course(id), PRIMARY KEY (group_id, course_id));";
       stmt.executeUpdate(sql);
-      System.out.println("Created group_course table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -175,7 +168,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS department_program (department_id INT NOT NULL, program_id INT NOT NULL, CONSTRAINT FK_department_program_department FOREIGN KEY (department_id) REFERENCES department(id), CONSTRAINT FK_department_program_program FOREIGN KEY (program_id) REFERENCES program(id), PRIMARY KEY (department_id, program_id));";
       stmt.executeUpdate(sql);
-      System.out.println("Created department_program table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -193,7 +185,6 @@ public class Manager {
       Statement stmt = conn.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS course_class (course_id INT NOT NULL, class_id INT NOT NULL, CONSTRAINT FK_course_class_course FOREIGN KEY (course_id) REFERENCES course(id), CONSTRAINT FK_course_class_class FOREIGN KEY (class_id) REFERENCES class(id), PRIMARY KEY (course_id, class_id));";
       stmt.executeUpdate(sql);
-      System.out.println("Created course_class table");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -550,7 +541,11 @@ public class Manager {
     }
     System.out.println("SelectClassByType");
   }
-
+  //
+  //
+  // Below are custom use-cases
+  //
+  //
   public static void SelectCoursesByDepartmentName(String departmentName) {
     Manager.Connect();
     try {
@@ -582,12 +577,12 @@ public class Manager {
   }
   
   // Adds groups to a program and returns total credit to get a degree
-  public static void AddGroupsToProgramAndGetTotalCredits(int programID, String[] groupNames) {
+  public static void AddGroupsToProgramAndGetTotalCredits(String programID, String[] groupNames) {
     Manager.Connect();
     for (String groupName : groupNames) {
       try {
         PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ?))");
-        ps.setInt(1, programID);
+        ps.setString(1, programID);
         ps.setString(2, groupName);
         ps.executeUpdate();
         System.out.println("Assigned group to program");
@@ -597,7 +592,7 @@ public class Manager {
     }
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("SELECT SUM(credit) FROM grp WHERE id IN (SELECT group_id FROM program_group WHERE program_id = ?)");
-      ps.setInt(1, programID);
+      ps.setString(1, programID);
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
         System.out.println(rs.getString("SUM(credit)"));
@@ -608,13 +603,13 @@ public class Manager {
     System.out.println("AddGroupsToProgramAndGetTotalCredits");
   }
   // Adds a course, then assigns to a group.
-  public static void AddCourseAndAssignToGroup(String courseName, int credit, int departmentID, String term, String location, String finalTime, String groupName) {
+  public static void AddCourseAndAssignToGroup(String courseName, String credit, String departmentID, String term, String location, String finalTime, String groupName) {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course (name, credit, department_id, term, location, final_time) VALUES (?, ?, ?, ?, ?, ?)");
       ps.setString(1, courseName);
-      ps.setInt(2, credit);
-      ps.setInt(3, departmentID);
+      ps.setString(2, credit);
+      ps.setString(3, departmentID);
       ps.setString(4, term);
       ps.setString(5, location);
       ps.setString(6, finalTime);
@@ -682,30 +677,30 @@ public class Manager {
 //END;
 //$$ LANGUAGE plpgsql;
 
-  public static void GenerateClassesForSemester(int courseID, String semesterStart, String semesterEnd, String classDay, String classTime, String classType) {
+  public static void GenerateClassesForSemester(String courseID, String semesterStart, String semesterEnd, String classDay, String classTime, String classType) {
     Manager.Connect();
     
-    try {
-      // Create stored procedure
-      Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart DATE, semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
-      stmt.executeUpdate();
-      System.out.println("Created stored procedure");
-      // Call  stored procedure
-      PreparedStatement ps = Manager.conn.prepareStatement("SELECT GenerateClassesForSemester(?, ?, ?, ?, ?, ?)");
-      ps.setInt(1, courseID);
-      ps.setString(2, semesterStart);
-      ps.setString(3, semesterEnd);
-      ps.setString(4, classDay);
-      ps.setString(5, classTime);
-      ps.setString(6, classType);
-      ResultSet rs = ps.executeQuery();
-      while (rs.next()) {
-        System.out.println(rs.getString("GenerateClassesForSemester"));
-      }
-      System.out.println("Called stored procedure");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    //try {
+    //  // Create stored procedure
+    //  Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart DATE, semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
+    //  stmt.executeUpdate();
+    //  System.out.println("Created stored procedure");
+    //  // Call  stored procedure
+    //  PreparedStatement ps = Manager.conn.prepareStatement("SELECT GenerateClassesForSemester(?, ?, ?, ?, ?, ?)");
+    //  ps.setString(1, courseID);
+    //  ps.setString(2, semesterStart);
+    //  ps.setString(3, semesterEnd);
+    //  ps.setString(4, classDay);
+    //  ps.setString(5, classTime);
+    //  ps.setString(6, classType);
+    //  ResultSet rs = ps.executeQuery();
+    //  while (rs.next()) {
+    //    System.out.println(rs.getString("GenerateClassesForSemester"));
+    //  }
+    //  System.out.println("Called stored procedure");
+    //} catch (Exception e) {
+    //  e.printStackTrace();
+    //}
 
     System.out.println("GenerateClassesForSemester");
   }

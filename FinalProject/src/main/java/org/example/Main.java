@@ -15,7 +15,8 @@ import org.example.database.Manager;
     UpdateCommand.class,
     DeleteCommand.class,
     SelectCommand.class,
-    LinkCommand.class
+    LinkCommand.class,
+    CustomCommand.class
   }
 )
 public class Main {

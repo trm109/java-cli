@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.picocli.PropertiesFileVersionProvider;
 import picocli.CommandLine;
+import org.example.database.Manager;
 
 @CommandLine.Command(
   name = "app",
@@ -17,6 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Main()).execute(args);
+        Manager.Connect();
         System.exit(exitCode);
     }
 }

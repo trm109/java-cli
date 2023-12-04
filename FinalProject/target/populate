@@ -1,0 +1,20 @@
+#!/bin/sh
+java -jar app.jar add course --name advanced_java --credit 4 --departmentId 1 --term fall --location PBL --finalTime 1999-05-10
+java -jar app.jar add course --name data_structures --credit 3 --departmentId 1 --term spring --location Thwing --finalTime 1999-03-15
+java -jar app.jar add course --name algorithms --credit 4 --departmentId 1 --term summer --location NRB --finalTime 1999-07-20
+java -jar app.jar add course --name web_development --credit 3 --departmentId 1 --term fall --location quad --finalTime 1999-11-25
+java -jar app.jar add course --name machine_learning --credit 4 --departmentId 1 --term spring --location Tink --finalTime 1999-04-05
+java -jar app.jar add course --name database_systems --credit 3 --departmentId 1 --term summer --location PBL --finalTime 1999-08-30
+java -jar app.jar add course --name computer_networks --credit 4 --departmentId 1 --term fall --location Thwing --finalTime 1999-12-10
+java -jar app.jar add course --name operating_systems --credit 3 --departmentId 1 --term spring --location NRB --finalTime 1999-02-20
+java -jar app.jar add course --name software_engineering --credit 4 --departmentId 1 --term summer --location quad --finalTime 1999-07-15
+java -jar app.jar add course --name organic_chemistry --credit 3 --departmentId 2 --term fall --location Tink --finalTime 1999-10-30
+java -jar app.jar add course --name quantum_physics --credit 4 --departmentId 2 --term spring --location PBL --finalTime 1999-03-25
+java -jar app.jar add course --name calculus_III --credit 3 --departmentId 3 --term summer --location Thwing --finalTime 1999-08-
+java -jar app.jar add course --name spanish_101 --credit 4 --departmentId 4 --term fall --location NRB --finalTime 1999-11-10
+java -jar app.jar add course --name french_literature --credit 3 --departmentId 4 --term spring --location quad --finalTime 1999-04-10
+java -jar app.jar add course --name german_conversation --credit 4 --departmentId 4 --term summer --location Tink --finalTime 1999-08-25
+java -jar app.jar add course --name introduction_to_philosophy --credit 3 --departmentId 5 --term fall --location PBL --finalTime 1999-10-15
+java -jar app.jar add course --name world_history --credit 4 --departmentId 6 --term spring --location Thwing --finalTime 1999-05-05
+java -jar app.jar add course --name basic_statistics --credit 3 --departmentId 7 --term summer --location NRB --finalTime 1999-09-10
+java -jar app.jar add course --name modern_art --credit 4 --departmentId 8 --term fall --location quad --finalTime 1999-12-05

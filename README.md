@@ -14,6 +14,7 @@ Run the project with the following command:
 ```
 This will start the project.
 - The CLI is called `./planner` and help is accessible by running `./planner --help`.
+    - From here, we recommend populating the databases using `./populate`.
 - The Database Viewer is accessible at `http://localhost:8080`.
     - The email is `admin@email.com`, and the password is `admin`
     - The database is available with these settings:

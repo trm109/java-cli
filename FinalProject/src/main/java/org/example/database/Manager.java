@@ -210,11 +210,11 @@ public class Manager {
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course (name, credit, department_id, term, location, final_time) VALUES (?, ?, ?, ?, ?, ?)");
       ps.setString(1, name);
-      ps.setString(2, credit);
-      ps.setString(3, departmentID);
+      ps.setInt(2, Integer.parseInt(credit));
+      ps.setInt(3, Integer.parseInt(departmentID));
       ps.setString(4, term);
       ps.setString(5, location);
-      ps.setString(6, finalTime);
+      ps.setObject(6, finalTime);
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -239,7 +239,7 @@ public class Manager {
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO grp (group_name, credit) VALUES (?, ?)");
       ps.setString(1, groupName);
-      ps.setString(2, credit);
+      ps.setInt(2, Integer.parseInt(credit));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -272,8 +272,8 @@ public class Manager {
     Manager.Connect();
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, ?)");
-      ps.setString(1, programID);
-      ps.setString(2, groupID);
+      ps.setInt(1, Integer.parseInt(programID));
+      ps.setInt(2, Integer.parseInt(groupID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -285,8 +285,8 @@ public class Manager {
     Manager.Connect();
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO group_course (group_id, course_id) VALUES (?, ?)");
-      ps.setString(1, groupID);
-      ps.setString(2, courseID);
+      ps.setInt(1, Integer.parseInt(groupID));
+      ps.setInt(2, Integer.parseInt(courseID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -298,8 +298,8 @@ public class Manager {
     Manager.Connect();
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course_prereq (course_id, prereq_id) VALUES (?, ?)");
-      ps.setString(1, courseID);
-      ps.setString(2, prereqID);
+      ps.setInt(1, Integer.parseInt(courseID));
+      ps.setInt(2, Integer.parseInt(prereqID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -311,8 +311,8 @@ public class Manager {
     Manager.Connect();
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO department_program (department_id, program_id) VALUES (?, ?)");
-      ps.setString(1, departmentID);
-      ps.setString(2, programID);
+      ps.setInt(1, Integer.parseInt(departmentID));
+      ps.setInt(2, Integer.parseInt(programID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -324,8 +324,8 @@ public class Manager {
     Manager.Connect();
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course_class (course_id, class_id) VALUES (?, ?)");
-      ps.setString(1, courseID);
-      ps.setString(2, classID);
+      ps.setInt(1, Integer.parseInt(courseID));
+      ps.setInt(2, Integer.parseInt(classID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -340,7 +340,7 @@ public class Manager {
       ps.setString(1, name);
       ps.setString(2, title);
       ps.setString(3, type);
-      ps.setString(4, programID);
+      ps.setInt(4, Integer.parseInt(programID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -353,12 +353,12 @@ public class Manager {
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("UPDATE course SET name = ?, credit = ?, department_id = ?, term = ?, location = ?, final_time = ? WHERE id = ?");
       ps.setString(1, name);
-      ps.setString(2, credit);
-      ps.setString(3, departmentID);
+      ps.setInt(2, Integer.parseInt(credit));
+      ps.setInt(3, Integer.parseInt(departmentID));
       ps.setString(4, term);
       ps.setString(5, location);
-      ps.setString(6, finalTime);
-      ps.setString(7, courseID);
+      ps.setObject(6, finalTime);
+      ps.setInt(7, Integer.parseInt(courseID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -371,7 +371,7 @@ public class Manager {
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("UPDATE department SET name = ? WHERE id = ?");
       ps.setString(1, name);
-      ps.setString(2, departmentID);
+      ps.setInt(2, Integer.parseInt(departmentID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -384,7 +384,7 @@ public class Manager {
     try{
       PreparedStatement ps = Manager.conn.prepareStatement("UPDATE grp SET group_name = ?, credit = ? WHERE id = ?");
       ps.setString(1, groupName);
-      ps.setString(2, credit);
+      ps.setInt(2, Integer.parseInt(credit));
       ps.setString(3, groupID);
       ps.executeUpdate();
     } catch (Exception e) {
@@ -399,7 +399,7 @@ public class Manager {
       PreparedStatement ps = Manager.conn.prepareStatement("UPDATE class SET time = ?, type = ? WHERE id = ?");
       ps.setString(1, time);
       ps.setString(2, type);
-      ps.setString(3, classID);
+      ps.setInt(3, Integer.parseInt(classID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -411,7 +411,7 @@ public class Manager {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM program WHERE id = ?");
-      ps.setString(1, programID);
+      ps.setInt(1, Integer.parseInt(programID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -423,7 +423,7 @@ public class Manager {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM course WHERE id = ?");
-      ps.setString(1, courseID);
+      ps.setInt(1, Integer.parseInt(courseID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -435,7 +435,7 @@ public class Manager {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM department WHERE id = ?");
-      ps.setString(1, departmentID);
+      ps.setInt(1, Integer.parseInt(departmentID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -447,7 +447,7 @@ public class Manager {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM grp WHERE id = ?");
-      ps.setString(1, groupID);
+      ps.setInt(1, Integer.parseInt(groupID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -459,7 +459,7 @@ public class Manager {
     Manager.Connect();
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM class WHERE id = ?");
-      ps.setString(1, classID);
+      ps.setInt(1, Integer.parseInt(classID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -582,7 +582,7 @@ public class Manager {
     for (String groupName : groupNames) {
       try {
         PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ?))");
-        ps.setString(1, programID);
+        ps.setInt(1, Integer.parseInt(programID));
         ps.setString(2, groupName);
         ps.executeUpdate();
         System.out.println("Assigned group to program");
@@ -592,7 +592,7 @@ public class Manager {
     }
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("SELECT SUM(credit) FROM grp WHERE id IN (SELECT group_id FROM program_group WHERE program_id = ?)");
-      ps.setString(1, programID);
+      ps.setInt(1, Integer.parseInt(programID));
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
         System.out.println(rs.getString("SUM(credit)"));
@@ -608,11 +608,11 @@ public class Manager {
     try {
       PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course (name, credit, department_id, term, location, final_time) VALUES (?, ?, ?, ?, ?, ?)");
       ps.setString(1, courseName);
-      ps.setString(2, credit);
-      ps.setString(3, departmentID);
+      ps.setInt(2, Integer.parseInt(credit));
+      ps.setInt(3, Integer.parseInt(departmentID));
       ps.setString(4, term);
       ps.setString(5, location);
-      ps.setString(6, finalTime);
+      ps.setObject(6, finalTime);
       ps.executeUpdate();
       System.out.println("Added course");
     } catch (Exception e) {
@@ -635,8 +635,8 @@ public class Manager {
     for (String prerequisiteID : prerequisiteIDs) {
       try {
         PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO course_prereq (course_id, prereq_id) VALUES (?, ?)");
-        ps.setString(1, courseID);
-        ps.setString(2, prerequisiteID);
+        ps.setInt(1, Integer.parseInt(courseID));
+        ps.setInt(2, Integer.parseInt(prerequisiteID));
         ps.executeUpdate();
         System.out.println("Assigned prereq " + prerequisiteIDs + " to course " + courseID);
       } catch (Exception e) {

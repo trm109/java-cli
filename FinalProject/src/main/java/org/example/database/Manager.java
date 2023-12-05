@@ -4,14 +4,6 @@ import java.sql.*;
 import java.util.Properties;
 
 public class Manager {
-  private static String connectionUrl = 
-    "jdbc:postgresql://db:1433/database;" 
-    + "databaseName=Database;"
-    + "user=sa;" 
-    + "password=yourStrong(!)Password;" 
-    + "encrypt=true;"
-    + "trustServerCertificate=true;" 
-    + "loginTimeout=15;";
   public static Connection conn = null;
   
   //private static ResultSet resultset = null;
@@ -27,7 +19,7 @@ public class Manager {
       props.setProperty("password", "password!");
       conn = DriverManager.getConnection(url, props);
       // print connection info
-      System.out.println("Connected to the PostgreSQL server successfully.");
+      //System.out.println("Connected to the PostgreSQL server successfully.");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -291,7 +283,7 @@ public class Manager {
   //    INSERT INTO program_group (program_id, group_id)
   //    VALUES (@programID, @groupID);
   // END;
-  // #UNTESTED
+  // #WORKING
   public static void LinkProgramGroup(String programID, String groupID) {
     Manager.Connect();
     try{
@@ -305,7 +297,7 @@ public class Manager {
     System.out.println("LinkProgramGroup");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void LinkGroupCourse(String groupID, String courseID) {
     Manager.Connect();
     try{
@@ -319,7 +311,7 @@ public class Manager {
     System.out.println("LinkGroupAndCourse");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void LinkCoursePrereq(String courseID, String prereqID) {
     Manager.Connect();
     try{
@@ -333,7 +325,7 @@ public class Manager {
     System.out.println("LinkCourseAndPrerequisite");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void LinkDepartmentProgram(String departmentID, String programID) {
     Manager.Connect();
     try{
@@ -347,7 +339,7 @@ public class Manager {
     System.out.println("LinkDepartmentAndProgram");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void LinkCourseClass(String courseID, String classID) {
     Manager.Connect();
     try{
@@ -361,7 +353,7 @@ public class Manager {
     System.out.println("LinkCourseAndClass");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void UpdateProgram(String programID, String name, String title, String type) {
     Manager.Connect();
     try{
@@ -377,7 +369,7 @@ public class Manager {
     System.out.println("UpdateProgram");
   }
   
-  // #UNTESTED
+  // #WORKING
   public static void UpdateCourse(String courseID, String name, String credit, String departmentID, String term, String location, String finalTime) {
     Manager.Connect();
     try{
@@ -396,7 +388,7 @@ public class Manager {
     System.out.println("UpdateCourse");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void UpdateDepartment(String departmentID, String name) {
     Manager.Connect();
     try{
@@ -410,7 +402,7 @@ public class Manager {
     System.out.println("UpdateDepartment");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void UpdateGroup(String groupID, String groupName, String credit) {
     Manager.Connect();
     try{
@@ -425,7 +417,7 @@ public class Manager {
     System.out.println("UpdateGroup");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void UpdateClass(String classID, String time, String type) {
     Manager.Connect();
     try{
@@ -440,7 +432,7 @@ public class Manager {
     System.out.println("UpdateClass");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void DeleteProgram(String programID) {
     Manager.Connect();
     try {
@@ -462,7 +454,7 @@ public class Manager {
     System.out.println("DeleteProgram");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void DeleteCourse(String courseID) {
     Manager.Connect();
     try {
@@ -491,7 +483,7 @@ public class Manager {
     System.out.println("DeleteCourse");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void DeleteDepartment(String departmentID) {
     Manager.Connect();
     try {
@@ -499,6 +491,21 @@ public class Manager {
       PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM department_program WHERE department_id = ?");
       psA.setInt(1, Integer.parseInt(departmentID));
       psA.executeUpdate();
+      // delete from courses w/ department_id from course_prereq
+      PreparedStatement psC = Manager.conn.prepareStatement("DELETE FROM course_prereq WHERE course_id IN (SELECT id FROM course WHERE department_id = ?)");
+      psC.setInt(1, Integer.parseInt(departmentID));
+      psC.executeUpdate();
+      PreparedStatement psD = Manager.conn.prepareStatement("DELETE FROM course_prereq WHERE prereq_id IN (SELECT id FROM course WHERE department_id = ?)");
+      psD.setInt(1, Integer.parseInt(departmentID));
+      psD.executeUpdate();
+      // delete from courses w/ department_id from group_course
+      PreparedStatement psE = Manager.conn.prepareStatement("DELETE FROM group_course WHERE course_id IN (SELECT id FROM course WHERE department_id = ?)");
+      psE.setInt(1, Integer.parseInt(departmentID));
+      psE.executeUpdate();
+      // delete from any course with department_id
+      PreparedStatement psB = Manager.conn.prepareStatement("DELETE FROM course WHERE department_id = ?");
+      psB.setInt(1, Integer.parseInt(departmentID));
+      psB.executeUpdate();
       // delete from department
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM department WHERE id = ?");
       ps.setInt(1, Integer.parseInt(departmentID));
@@ -509,7 +516,7 @@ public class Manager {
     System.out.println("DeleteDepartment");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void DeleteGroup(String groupID) {
     Manager.Connect();
     try {
@@ -531,7 +538,7 @@ public class Manager {
     System.out.println("DeleteGroup");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void DeleteClass(String classID) {
     Manager.Connect();
     try {
@@ -549,7 +556,7 @@ public class Manager {
     System.out.println("DeleteClass");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectProgramByName(String programName) {
     Manager.Connect();
     try {
@@ -565,7 +572,7 @@ public class Manager {
     System.out.println("SelectProgramByName");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectCourseByName(String courseName) {
     Manager.Connect();
     try {
@@ -581,7 +588,7 @@ public class Manager {
     System.out.println("SelectCourseByName");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectDepartmentByName(String departmentName) {
     Manager.Connect();
     try {
@@ -597,7 +604,7 @@ public class Manager {
     System.out.println("SelectDepartmentByName");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectGroupByName(String groupName) {
     Manager.Connect();
     try {
@@ -613,7 +620,7 @@ public class Manager {
     System.out.println("SelectGroupByName");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectClassByType(String classType) {
     Manager.Connect();
     try {
@@ -633,7 +640,7 @@ public class Manager {
   // Below are custom use-cases
   //
   //
-  // #UNTESTED
+  // #WORKING
   public static void SelectCoursesByDepartmentName(String departmentName) {
     Manager.Connect();
     try {
@@ -649,7 +656,7 @@ public class Manager {
     System.out.println("SelectCoursesByDepartmentName");
   }
 
-  // #UNTESTED
+  // #WORKING
   public static void SelectClassesByCourseName(String courseName) {
     Manager.Connect();
     try {
@@ -672,25 +679,28 @@ public class Manager {
     // create groups.
     for (String groupName : groupNames) {
       try {
-        PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ?))");
+        PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO program_group (program_id, group_id) VALUES (?, (SELECT id FROM grp WHERE group_name = ? LIMIT 1))");
         ps.setInt(1, Integer.parseInt(programID));
         ps.setString(2, groupName);
         ps.executeUpdate();
         System.out.println("Assigned group to program");
+        try {
+          PreparedStatement psA = Manager.conn.prepareStatement("SELECT SUM(credit) as total_credits FROM grp WHERE id IN (SELECT group_id FROM program_group WHERE program_id = ? LIMIT 1)");
+          psA.setInt(1, Integer.parseInt(programID));
+          ResultSet rs = psA.executeQuery();
+          while (rs.next()) {
+            System.out.println(rs.getString("total_credits"));
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.out.println("SQL query failed. programId may be invalid.");
+        }
       } catch (Exception e) {
         e.printStackTrace();
+        System.out.println("SQL query failed. programId or groupName may be invalid.");
       }
     }
-    try {
-      PreparedStatement ps = Manager.conn.prepareStatement("SELECT SUM(credit) FROM grp WHERE id IN (SELECT group_id FROM program_group WHERE program_id = ?)");
-      ps.setInt(1, Integer.parseInt(programID));
-      ResultSet rs = ps.executeQuery();
-      while (rs.next()) {
-        System.out.println(rs.getString("SUM(credit)"));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    
     System.out.println("AddGroupsToProgramAndGetTotalCredits");
   }
   // Adds a course, then assigns to a group.
@@ -707,18 +717,20 @@ public class Manager {
       ps.setObject(6, finalTime);
       ps.executeUpdate();
       System.out.println("Added course");
+      try {
+        // !! Not working.
+        PreparedStatement psA = Manager.conn.prepareStatement("INSERT INTO group_course (group_id, course_id) VALUES ((SELECT id FROM grp WHERE group_name = ? LIMIT 1), (SELECT id FROM course WHERE name = ? LIMIT 1))");
+        psA.setString(1, groupName);
+        psA.setString(2, courseName);
+        psA.executeUpdate();
+        System.out.println("Assigned course to group");
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("SQL query failed. courseName, credit, departmentID, term, location, finalTime, or groupName may be invalid.");
+      }
     } catch (Exception e) {
       e.printStackTrace();
-    }
-    try {
-      // !! Not working.
-      PreparedStatement ps = Manager.conn.prepareStatement("INSERT INTO group_course (group_id, course_id) VALUES ((SELECT id FROM grp WHERE group_name = ?), (SELECT id FROM course WHERE name = ?))");
-      ps.setString(1, groupName);
-      ps.setString(2, courseName);
-      ps.executeUpdate();
-      System.out.println("Assigned course to group");
-    } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("SQL query failed. courseName, credit, departmentID, term, location, finalTime, or groupName may be invalid.");
     }
     System.out.println("AddCourseAndAssignToGroup");
   }
@@ -732,9 +744,10 @@ public class Manager {
         ps.setInt(1, Integer.parseInt(courseID));
         ps.setInt(2, Integer.parseInt(prerequisiteID));
         ps.executeUpdate();
-        System.out.println("Assigned prereq " + prerequisiteIDs + " to course " + courseID);
+        System.out.println("Assigned prereq " + prerequisiteID + " to course " + courseID);
       } catch (Exception e) {
         e.printStackTrace();
+        System.out.println("SQL query failed. courseID or prerequisiteIDs may be invalid.");
       }
     }
     System.out.println("AddPrerequisitesToCourse");
@@ -774,28 +787,27 @@ public class Manager {
   // #UNTESTED
   public static void GenerateClassesForSemester(String courseID, String semesterStart, String semesterEnd, String classDay, String classTime, String classType) {
     Manager.Connect();
-    
-    //try {
-    //  // Create stored procedure
-    //  Statement stmt = Manager.conn.createStatement("CREATE OR REPLACE FUNCTION GenerateClassesForSemester( courseID INT, semesterStart VARCHAR(20), semesterEnd DATE, classDay VARCHAR(10), -- Day of the week (e.g., 'Monday', 'Tuesday', etc.) classTime TIME, classType VARCHAR(20) ) RETURNS VOID AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP -- Check if the current day is the specified class day IF EXTRACT(DOW FROM currentDate) + 1 = EXTRACT(ISODOW FROM CAST(classDay AS DATE)) THEN -- Adding 1 to EXTRACT(DOW FROM currentDate) because PostgreSQL returns Sunday as 0, while SQL Server returns it as 1. INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; -- Link the class to the course INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; -- Move to the next week currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;");
-    //  stmt.executeUpdate();
-    //  System.out.println("Created stored procedure");
-    //  // Call  stored procedure
-    //  PreparedStatement ps = Manager.conn.prepareStatement("SELECT GenerateClassesForSemester(?, ?, ?, ?, ?, ?)");
-    //  ps.setString(1, courseID);
-    //  ps.setString(2, semesterStart);
-    //  ps.setString(3, semesterEnd);
-    //  ps.setString(4, classDay);
-    //  ps.setString(5, classTime);
-    //  ps.setString(6, classType);
-    //  ResultSet rs = ps.executeQuery();
-    //  while (rs.next()) {
-    //    System.out.println(rs.getString("GenerateClassesForSemester"));
-    //  }
-    //  System.out.println("Called stored procedure");
-    //} catch (Exception e) {
-    //  e.printStackTrace();
-    //}
+    try {
+      // Create stored procedure
+      Statement stmt = Manager.conn.createStatement();
+      String sql = "CREATE OR REPLACE PROCEDURE GenerateClassesForSemester( IN courseID INT, IN semesterStart DATE, IN semesterEnd DATE, IN classDay VARCHAR(10), IN classTime VARCHAR(20), IN classType VARCHAR(20) ) AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP IF EXTRACT(ISODOW FROM currentDate) = 1 AND classDay = 'Monday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 2 AND classDay = 'Tuesday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 3 AND classDay = 'Wednesday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 4 AND classDay = 'Thursday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 5 AND classDay = 'Friday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 6 AND classDay = 'Saturday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); ELSIF EXTRACT(ISODOW FROM currentDate) = 7 AND classDay = 'Sunday' THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;";
+      // CREATE OR REPLACE PROCEDURE GenerateClassesForSemester( IN courseID INT, IN semesterStart DATE, IN semesterEnd DATE, IN classDay VARCHAR(10), IN classTime VARCHAR(20), IN classType VARCHAR(20) ) AS $$ DECLARE currentDate DATE := semesterStart; newClassID INT; BEGIN WHILE currentDate <= semesterEnd LOOP IF EXTRACT(ISODOW FROM currentDate) = CASE classDay WHEN 'Monday' THEN 1 WHEN 'Tuesday' THEN 2 WHEN 'Wednesday' THEN 3 WHEN 'Thursday' THEN 4 WHEN 'Friday' THEN 5 WHEN 'Saturday' THEN 6 WHEN 'Sunday' THEN 7 END THEN INSERT INTO class (time, type) VALUES (classTime, classType) RETURNING id INTO newClassID; INSERT INTO course_class (course_id, class_id) VALUES (courseID, newClassID); END IF; currentDate := currentDate + INTERVAL '1 week'; END LOOP; END; $$ LANGUAGE plpgsql;
+      stmt.executeUpdate(sql);
+      System.out.println("Created stored procedure");
+      // Call  stored procedure
+      PreparedStatement ps = Manager.conn.prepareStatement("CALL GenerateClassesForSemester(?, ?, ?, ?, ?, ?)");
+      ps.setInt(1, Integer.parseInt(courseID));
+      //Date.valueOf(
+      ps.setDate(2, Date.valueOf(semesterStart));
+      ps.setDate(3, Date.valueOf(semesterEnd));
+      ps.setString(4, classDay);
+      ps.setString(5, classTime);
+      ps.setString(6, classType);
+      ps.executeUpdate();
+      System.out.println("Called stored procedure");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     System.out.println("GenerateClassesForSemester");
   }

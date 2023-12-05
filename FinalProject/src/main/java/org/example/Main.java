@@ -9,8 +9,6 @@ import org.example.database.Manager;
   mixinStandardHelpOptions = true,
   versionProvider = PropertiesFileVersionProvider.class,
   subcommands = {
-    HelloCommand.class, 
-    ListFilesCommand.class,
     AddCommand.class,
     UpdateCommand.class,
     DeleteCommand.class,
@@ -25,6 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Main()).execute(args);
+        System.out.println("");
         System.exit(exitCode);
     }
 }

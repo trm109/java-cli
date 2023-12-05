@@ -195,6 +195,8 @@ public class Manager {
       e.printStackTrace();
     }
   }
+
+  // #WORKING
   public static void AddProgram(String name, String title, String type) {
     Manager.Connect();
     // using jdbc, add program to database
@@ -210,7 +212,7 @@ public class Manager {
     // print success message
     System.out.println("AddProgram"); 
   }
-
+  // #WORKING
   public static void AddCourse(String name, String credit, String departmentID, String term, String location, String finalTime) {
     Manager.Connect();
     try {
@@ -227,7 +229,7 @@ public class Manager {
     }
     System.out.println("AddCourse");
   }
-
+  // #WORKING
   public static void AddDepartment(String name) {
     Manager.Connect();
     try {
@@ -239,7 +241,7 @@ public class Manager {
     }
     System.out.println("AddDepartment");
   }
-
+  // #WORKING
   public static void AddGroup(String groupName, String credit) {
     Manager.Connect();
     try {
@@ -252,7 +254,8 @@ public class Manager {
     }
     System.out.println("AddGroup");
   }
-
+  
+  // #WORKING
   public static void AddClass(String time, String type) {
     Manager.Connect();
     try {
@@ -273,7 +276,7 @@ public class Manager {
   //    INSERT INTO program_group (program_id, group_id)
   //    VALUES (@programID, @groupID);
   // END;
-
+  // #UNTESTED
   public static void LinkProgramGroup(String programID, String groupID) {
     Manager.Connect();
     try{
@@ -287,6 +290,7 @@ public class Manager {
     System.out.println("LinkProgramGroup");
   }
 
+  // #UNTESTED
   public static void LinkGroupCourse(String groupID, String courseID) {
     Manager.Connect();
     try{
@@ -300,6 +304,7 @@ public class Manager {
     System.out.println("LinkGroupAndCourse");
   }
 
+  // #UNTESTED
   public static void LinkCoursePrereq(String courseID, String prereqID) {
     Manager.Connect();
     try{
@@ -313,6 +318,7 @@ public class Manager {
     System.out.println("LinkCourseAndPrerequisite");
   }
 
+  // #UNTESTED
   public static void LinkDepartmentProgram(String departmentID, String programID) {
     Manager.Connect();
     try{
@@ -326,6 +332,7 @@ public class Manager {
     System.out.println("LinkDepartmentAndProgram");
   }
 
+  // #UNTESTED
   public static void LinkCourseClass(String courseID, String classID) {
     Manager.Connect();
     try{
@@ -339,6 +346,7 @@ public class Manager {
     System.out.println("LinkCourseAndClass");
   }
 
+  // #UNTESTED
   public static void UpdateProgram(String programID, String name, String title, String type) {
     Manager.Connect();
     try{
@@ -354,6 +362,7 @@ public class Manager {
     System.out.println("UpdateProgram");
   }
   
+  // #UNTESTED
   public static void UpdateCourse(String courseID, String name, String credit, String departmentID, String term, String location, String finalTime) {
     Manager.Connect();
     try{
@@ -372,6 +381,7 @@ public class Manager {
     System.out.println("UpdateCourse");
   }
 
+  // #UNTESTED
   public static void UpdateDepartment(String departmentID, String name) {
     Manager.Connect();
     try{
@@ -385,6 +395,7 @@ public class Manager {
     System.out.println("UpdateDepartment");
   }
 
+  // #UNTESTED
   public static void UpdateGroup(String groupID, String groupName, String credit) {
     Manager.Connect();
     try{
@@ -399,6 +410,7 @@ public class Manager {
     System.out.println("UpdateGroup");
   }
 
+  // #UNTESTED
   public static void UpdateClass(String classID, String time, String type) {
     Manager.Connect();
     try{
@@ -413,6 +425,7 @@ public class Manager {
     System.out.println("UpdateClass");
   }
 
+  // #UNTESTED
   public static void DeleteProgram(String programID) {
     Manager.Connect();
     try {
@@ -425,6 +438,7 @@ public class Manager {
     System.out.println("DeleteProgram");
   }
 
+  // #UNTESTED
   public static void DeleteCourse(String courseID) {
     Manager.Connect();
     try {
@@ -437,6 +451,7 @@ public class Manager {
     System.out.println("DeleteCourse");
   }
 
+  // #UNTESTED
   public static void DeleteDepartment(String departmentID) {
     Manager.Connect();
     try {
@@ -449,6 +464,7 @@ public class Manager {
     System.out.println("DeleteDepartment");
   }
 
+  // #UNTESTED
   public static void DeleteGroup(String groupID) {
     Manager.Connect();
     try {
@@ -461,6 +477,7 @@ public class Manager {
     System.out.println("DeleteGroup");
   }
 
+  // #UNTESTED
   public static void DeleteClass(String classID) {
     Manager.Connect();
     try {
@@ -473,6 +490,7 @@ public class Manager {
     System.out.println("DeleteClass");
   }
 
+  // #UNTESTED
   public static void SelectProgramByName(String programName) {
     Manager.Connect();
     try {
@@ -488,6 +506,7 @@ public class Manager {
     System.out.println("SelectProgramByName");
   }
 
+  // #UNTESTED
   public static void SelectCourseByName(String courseName) {
     Manager.Connect();
     try {
@@ -503,6 +522,7 @@ public class Manager {
     System.out.println("SelectCourseByName");
   }
 
+  // #UNTESTED
   public static void SelectDepartmentByName(String departmentName) {
     Manager.Connect();
     try {
@@ -518,6 +538,7 @@ public class Manager {
     System.out.println("SelectDepartmentByName");
   }
 
+  // #UNTESTED
   public static void SelectGroupByName(String groupName) {
     Manager.Connect();
     try {
@@ -533,6 +554,7 @@ public class Manager {
     System.out.println("SelectGroupByName");
   }
 
+  // #UNTESTED
   public static void SelectClassByType(String classType) {
     Manager.Connect();
     try {
@@ -552,6 +574,7 @@ public class Manager {
   // Below are custom use-cases
   //
   //
+  // #UNTESTED
   public static void SelectCoursesByDepartmentName(String departmentName) {
     Manager.Connect();
     try {
@@ -567,6 +590,7 @@ public class Manager {
     System.out.println("SelectCoursesByDepartmentName");
   }
 
+  // #UNTESTED
   public static void SelectClassesByCourseName(String courseName) {
     Manager.Connect();
     try {
@@ -583,6 +607,7 @@ public class Manager {
   }
   
   // Adds groups to a program and returns total credit to get a degree
+  // #UNTESTED
   public static void AddGroupsToProgramAndGetTotalCredits(String programID, String[] groupNames) {
     Manager.Connect();
     // create groups.
@@ -610,6 +635,7 @@ public class Manager {
     System.out.println("AddGroupsToProgramAndGetTotalCredits");
   }
   // Adds a course, then assigns to a group.
+  // #UNTESTED
   public static void AddCourseAndAssignToGroup(String courseName, String credit, String departmentID, String term, String location, String finalTime, String groupName) {
     Manager.Connect();
     try {
@@ -638,6 +664,7 @@ public class Manager {
     System.out.println("AddCourseAndAssignToGroup");
   }
   // Adds multiple prequisites to a course
+  // #UNTESTED
   public static void AddPrerequisitesToCourse(String courseID, String[] prerequisiteIDs) {
     Manager.Connect();
     for (String prerequisiteID : prerequisiteIDs) {
@@ -685,6 +712,7 @@ public class Manager {
 //END;
 //$$ LANGUAGE plpgsql;
 
+  // #UNTESTED
   public static void GenerateClassesForSemester(String courseID, String semesterStart, String semesterEnd, String classDay, String classTime, String classType) {
     Manager.Connect();
     

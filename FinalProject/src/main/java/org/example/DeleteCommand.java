@@ -29,6 +29,10 @@ public class DeleteCommand implements Callable<Integer> {
         System.out.println("Please specify a table name");
         return 1;
       }
+      if (id == null) {
+        System.out.println("Please specify an id");
+        return 1;
+      }
       switch(tableName) {
         case "program":
           Manager.DeleteProgram(id);

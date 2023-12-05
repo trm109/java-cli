@@ -1,0 +1,132 @@
+#!/bin/bash
+
+# Initialize Database
+echo "Testing 'init'" && \
+./planner init && \
+
+#Program
+echo "Testing 'add program'" && \
+./planner add program --name testing-program --title testing-program --type test && \
+
+#department
+echo "Testing 'add department'" && \
+./planner add department --name testing-department && \
+
+#Course
+echo "Testing 'add course'" && \
+./planner add course --name testing-course --credit 1 --departmentId 1 --term summer --location zoom --finalTime 1990-10-10 && \
+./planner add course --name testing-prereq-a --credit 1 --departmentId 1 --term summer --location zoom --finalTime 1990-10-10 && \
+./planner add course --name testing-prereq-b --credit 1 --departmentId 1 --term summer --location zoom --finalTime 1990-10-10 && \
+
+
+#Group
+echo "Testing 'add group'" && \
+./planner add group --name testing-group --credit 4 && \
+./planner add group --name testing-group-n --credit 4 && \
+
+#Class
+echo "Testing 'add class'" && \
+./planner add class --time 15:00 --type test  && \
+
+# Link Program Group
+echo "Testing 'link program-group'" && \
+./planner link program-group --programId 1 --groupId 1 && \
+
+# Link Group Course
+echo "Testing 'link group-course'" && \
+./planner link group-course --groupId 1 --courseId 1 && \
+
+# Link Course Prereq
+echo "Testing 'link course-prereq'" && \
+./planner link course-prereq --courseId 1 --prereqId 2 && \
+
+# Link Department Program
+echo "Testing 'link department-program'" && \
+./planner link department-program --departmentId 1 --programId 1 && \
+
+# Link Course Class
+echo "Testing 'link course-class'" && \
+./planner link course-class --courseId 1 --classId 1 && \
+
+# Update Program
+echo "Testing 'update program'" && \
+./planner update program --programId 1 --name testing-program-u --title testing-program-u --type test-u && \
+
+# Update Course
+echo "Testing 'update course'" && \
+./planner update course --courseId 1 --name testing-course-u --credit 2 --departmentId 1 --term fall --location zoom --finalTime 1990-10-10 && \
+
+# Update Department
+echo "Testing 'update department'" && \
+./planner update department --departmentId 1 --name testing-department-u && \
+
+# Update Group
+echo "Testing 'update group'" && \
+./planner update group --groupId 1 --groupName testing-group-u --credit 5 && \
+
+# Update Class
+echo "Testing 'update class'" && \
+./planner update class --classId 1 --time 16:00 --type test-u && \
+
+# Select Program by Name
+echo "Testing 'select program-by-name'" && \
+./planner select program-by-name --name testing-program-u && \
+
+# Select Course by Name
+echo "Testing 'select course-by-name'" && \
+./planner select course-by-name --name testing-course-u && \
+
+# Select Department by Name
+echo "Testing 'select dept-by-name'" && \
+./planner select dept-by-name --name testing-department-u && \
+
+# Select Group by Name
+echo "Testing 'select group-by-name'" && \
+./planner select group-by-name --name testing-group-u && \
+
+# Select Class by Type
+echo "Testing 'select class-by-type'" && \
+./planner select class-by-type --type test-u && \
+
+# Select Courses by Department Name
+echo "Testing 'select course-by-dept-name'" && \
+./planner select course-by-dept-name --dept-name testing-department-u && \
+
+# Select Classes by Course Name
+echo "Testing 'select class-by-course-name'" && \
+./planner select class-by-course-name --course-name testing-course-u && \
+
+# Delete Program
+echo "Testing 'delete program'" && \
+./planner delete program --id 1 && \
+# Delete Course
+echo "Testing 'delete course'" && \
+./planner delete course --id 1 && \
+
+# Delete Department
+echo "Testing 'delete department'" && \
+./planner delete department --id 1 && \
+
+# Delete Group
+echo "Testing 'delete group'" && \
+./planner delete group --id 1 && \
+
+# Delete Class
+echo "Testing 'delete class'" && \
+./planner delete class --id 1 && \
+
+# Add Groups to Program
+echo "Testing 'custom add-groups-to-program'" && \
+./planner custom add-groups-to-program --programId 1 --groupNames testing-group-u --groupNames testing-group-n && \
+
+# Add Course and assign to Group
+echo "Testing 'custom add-course-and-assign-to-group'" && \
+./planner custom add-course-and-assign-to-group --courseName testing-course-u --credit 2 --departmentId 1 --term fall --location zoom --finalTime 1990-10-10 --groupName testing-group-u && \
+
+# Add Prereq to Course
+echo "Testing 'custom add-prereq-to-course'" && \
+./planner custom add-prereq-to-course --courseName testing-course-u --prereqCourseIds 2 --prereqCourseIds 3 && \
+
+# Generate Classes for Semester
+echo "Tesitng 'custom generate-classes-for-semester'" && \
+./planner custom generate-classes-for-semester --courseId 1 --semesterStart 2021-01-01 --semesterEnd 2021-05-01 --classDay 5 --classTime 10:10 --classType lecture

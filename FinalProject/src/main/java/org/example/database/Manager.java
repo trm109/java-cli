@@ -31,11 +31,25 @@ public class Manager {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    InitializeDatabase();
+  }
+
+  public static void ClearDatabase(){
+    try{
+      Manager.Connect();
+      Statement stmt = conn.createStatement();
+      String sql = "DROP TABLE IF EXISTS program, course, department, grp, class, program_group, group_course, course_prereq, department_program, course_class;";
+      stmt.executeUpdate(sql);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
   public static void InitializeDatabase(){
     // Create  tables if they don't exist
-
+    try{
+      Manager.Connect();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     // Create program table
     /*
        CREATE TABLE program (
@@ -53,25 +67,6 @@ public class Manager {
       e.printStackTrace();
     }
   
-    // Create course table
-    //CREATE TABLE course(
-    //    id SERIAL PRIMARY KEY,
-    //    name VARCHAR(50) NOT NULL,
-    //    credit INT NOT NULL,
-    //    department_id INT NOT NULL,
-    //    term VARCHAR(20) NOT NULL,
-    //    location VARCHAR(50) NOT NULL,
-    //    final_time VARCHAR(20) NOT NULL,
-    //    CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id)
-    //    );
-    try {
-      Statement stmt = conn.createStatement();
-      String sql = "CREATE TABLE IF NOT EXISTS course (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, credit INT NOT NULL, department_id INT NOT NULL, term VARCHAR(20) NOT NULL, location VARCHAR(50) NOT NULL, final_time VARCHAR(20) NOT NULL, CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id));";
-      stmt.executeUpdate(sql);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     // Create department table
     //CREATE TABLE department (
     //    id SERIAL PRIMARY KEY,
@@ -85,6 +80,26 @@ public class Manager {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    // Create course table
+    //CREATE TABLE course(
+    //    id SERIAL PRIMARY KEY,
+    //    name VARCHAR(50) NOT NULL,
+    //    credit INT NOT NULL,
+    //    department_id INT NOT NULL,
+    //    term VARCHAR(20) NOT NULL,
+    //    location VARCHAR(50) NOT NULL,
+    //    final_time VARCHAR(20) NOT NULL,
+    //    CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id)
+    //    );
+    try {
+      Statement stmt = conn.createStatement();
+      String sql = "CREATE TABLE IF NOT EXISTS course (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, credit INT NOT NULL, department_id INT NOT NULL, term VARCHAR(20) NOT NULL, location VARCHAR(50) NOT NULL, final_time VARCHAR(20) NOT NULL, CONSTRAINT FK_dept_course FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE);";
+      stmt.executeUpdate(sql);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
 
     // Create group table
     //CREATE TABLE group (
@@ -350,7 +365,7 @@ public class Manager {
   public static void UpdateProgram(String programID, String name, String title, String type) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) program SET name = ?, title = ?, type = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE program SET name = ?, title = ?, type = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setString(2, title);
       ps.setString(3, type);
@@ -366,7 +381,7 @@ public class Manager {
   public static void UpdateCourse(String courseID, String name, String credit, String departmentID, String term, String location, String finalTime) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) course SET name = ?, credit = ?, department_id = ?, term = ?, location = ?, final_time = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE course SET name = ?, credit = ?, department_id = ?, term = ?, location = ?, final_time = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setInt(2, Integer.parseInt(credit));
       ps.setInt(3, Integer.parseInt(departmentID));
@@ -385,7 +400,7 @@ public class Manager {
   public static void UpdateDepartment(String departmentID, String name) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) department SET name = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE department SET name = ? WHERE id = ?");
       ps.setString(1, name);
       ps.setInt(2, Integer.parseInt(departmentID));
       ps.executeUpdate();
@@ -399,10 +414,10 @@ public class Manager {
   public static void UpdateGroup(String groupID, String groupName, String credit) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) grp SET group_name = ?, credit = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE grp SET group_name = ?, credit = ? WHERE id = ?");
       ps.setString(1, groupName);
       ps.setInt(2, Integer.parseInt(credit));
-      ps.setString(3, groupID);
+      ps.setInt(3, Integer.parseInt(groupID));
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -414,7 +429,7 @@ public class Manager {
   public static void UpdateClass(String classID, String time, String type) {
     Manager.Connect();
     try{
-      PreparedStatement ps = Manager.conn.prepareStatement("UPVARCHAR(20) class SET time = ?, type = ? WHERE id = ?");
+      PreparedStatement ps = Manager.conn.prepareStatement("UPDATE class SET time = ?, type = ? WHERE id = ?");
       ps.setString(1, time);
       ps.setString(2, type);
       ps.setInt(3, Integer.parseInt(classID));
@@ -429,6 +444,15 @@ public class Manager {
   public static void DeleteProgram(String programID) {
     Manager.Connect();
     try {
+      // delete from program_group
+      PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM program_group WHERE program_id = ?");
+      psA.setInt(1, Integer.parseInt(programID));
+      psA.executeUpdate();
+      // delete from department_program
+      PreparedStatement psB = Manager.conn.prepareStatement("DELETE FROM department_program WHERE program_id = ?");
+      psB.setInt(1, Integer.parseInt(programID));
+      psB.executeUpdate();
+      // delete from program
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM program WHERE id = ?");
       ps.setInt(1, Integer.parseInt(programID));
       ps.executeUpdate();
@@ -442,6 +466,22 @@ public class Manager {
   public static void DeleteCourse(String courseID) {
     Manager.Connect();
     try {
+      // delete from course_class
+      PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM course_class WHERE course_id = ?");
+      psA.setInt(1, Integer.parseInt(courseID));
+      psA.executeUpdate();
+      // delete from course_prereq
+      PreparedStatement psB = Manager.conn.prepareStatement("DELETE FROM course_prereq WHERE course_id = ?");
+      psB.setInt(1, Integer.parseInt(courseID));
+      psB.executeUpdate();
+      PreparedStatement psC = Manager.conn.prepareStatement("DELETE FROM course_prereq WHERE prereq_id = ?");
+      psC.setInt(1, Integer.parseInt(courseID));
+      psC.executeUpdate();
+      // delete from group_course
+      PreparedStatement psD = Manager.conn.prepareStatement("DELETE FROM group_course WHERE course_id = ?");
+      psD.setInt(1, Integer.parseInt(courseID));
+      psD.executeUpdate();
+      // delete from course
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM course WHERE id = ?");
       ps.setInt(1, Integer.parseInt(courseID));
       ps.executeUpdate();
@@ -455,6 +495,11 @@ public class Manager {
   public static void DeleteDepartment(String departmentID) {
     Manager.Connect();
     try {
+      // delete from department_program
+      PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM department_program WHERE department_id = ?");
+      psA.setInt(1, Integer.parseInt(departmentID));
+      psA.executeUpdate();
+      // delete from department
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM department WHERE id = ?");
       ps.setInt(1, Integer.parseInt(departmentID));
       ps.executeUpdate();
@@ -468,6 +513,15 @@ public class Manager {
   public static void DeleteGroup(String groupID) {
     Manager.Connect();
     try {
+      // delete from program_group
+      PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM program_group WHERE group_id = ?");
+      psA.setInt(1, Integer.parseInt(groupID));
+      psA.executeUpdate();
+      // delete from group_course
+      PreparedStatement psB = Manager.conn.prepareStatement("DELETE FROM group_course WHERE group_id = ?");
+      psB.setInt(1, Integer.parseInt(groupID));
+      psB.executeUpdate();
+      // delete from grp
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM grp WHERE id = ?");
       ps.setInt(1, Integer.parseInt(groupID));
       ps.executeUpdate();
@@ -481,6 +535,11 @@ public class Manager {
   public static void DeleteClass(String classID) {
     Manager.Connect();
     try {
+      // delete from course_class
+      PreparedStatement psA = Manager.conn.prepareStatement("DELETE FROM course_class WHERE class_id = ?");
+      psA.setInt(1, Integer.parseInt(classID));
+      psA.executeUpdate();
+      // delete from class
       PreparedStatement ps = Manager.conn.prepareStatement("DELETE FROM class WHERE id = ?");
       ps.setInt(1, Integer.parseInt(classID));
       ps.executeUpdate();

@@ -107,13 +107,13 @@ public class UpdateCommand implements Callable<Integer> {
   @CommandLine.Option(names = {"-y", "--type"}, description = "Type")
   private String type;
 
-  @CommandLine.Option(names = {"-c", "--courseID"}, description = "Course ID")
+  @CommandLine.Option(names = {"-c", "--courseId"}, description = "Course ID")
   private String courseId;
   
   @CommandLine.Option(names = {"-r", "--credit"}, description = "Credit")
   private String credit;
 
-  @CommandLine.Option(names = {"-d", "--departmentID"}, description = "Department ID")
+  @CommandLine.Option(names = {"-d", "--departmentId"}, description = "Department ID")
   private String departmentId;
   
   @CommandLine.Option(names = {"-m", "--term"}, description = "Term")
@@ -125,13 +125,13 @@ public class UpdateCommand implements Callable<Integer> {
   @CommandLine.Option(names = {"-f", "--finalTime"}, description = "Final Time")
   private String finalTime;
 
-  @CommandLine.Option(names = {"-g", "--groupID"}, description = "Group ID")
+  @CommandLine.Option(names = {"-g", "--groupId"}, description = "Group ID")
   private String groupId;
 
   @CommandLine.Option(names = {"-o", "--groupName"}, description = "Group Name")
   private String groupName;
 
-  @CommandLine.Option(names = {"-a", "--classID"}, description = "Class ID")
+  @CommandLine.Option(names = {"-a", "--classId"}, description = "Class ID")
   private String classId;
 
   @CommandLine.Option(names = {"-i", "--time"}, description = "Time")

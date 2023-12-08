@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# init database
+java -jar app.jar init
+
 # Add Departments
 java -jar app.jar add department --name computer_science
 java -jar app.jar add department --name chemistry

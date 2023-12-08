@@ -9,7 +9,7 @@ services:
   db:
     image: postgres:latest
     ports:
-      - "5432:5432" # Host machine <-- Container.
+      - "5433:5432" # Host machine <-- Container.
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password!
